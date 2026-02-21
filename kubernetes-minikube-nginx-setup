@@ -1,0 +1,120 @@
+Installation of Kubectl - 
+
+Root -
+sudo su
+
+Update System Packages -
+sudo apt-get update
+
+Install Required Dependencies -
+sudo apt-get install -y apt-transport-https ca-certificates curl gnupg
+
+Add Kubernetes Signing Key -
+curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.35/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+
+Give permission -
+sudo chmod 644 /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+
+Add Kubernetes Repository -
+echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.35/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
+
+Set permission -
+sudo chmod 644 /etc/apt/sources.list.d/kubernetes.list
+
+Install kubectl -
+
+sudo apt-get update
+sudo apt-get install -y kubectl        
+
+Verify Installation -
+
+kubectl version --client
+
+
+
+
+
+Installation of Miniqube:
+
+Download Minikube - 
+curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube_latest_amd64.deb 
+
+Install Minikube -
+sudo dpkg -i minikube_latest_amd64.deb
+
+Verify installation -
+minikube version
+
+Start Minikube Cluster -
+minikube start
+
+Check Cluster Status -
+minikube status
+
+
+You should see:
+     host: Running
+     kubelet: Running
+     apiserver: Running
+
+Check Kubernetes Nodes -
+kubectl get nodes
+
+
+
+
+
+
+Deploy Nginx Pod:
+
+Create Pod Configuration File -
+nano pod.yaml
+
+Paste this:
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.14.2
+    ports:
+    - containerPort: 80
+
+Save:
+CTRL + X → Y → Enter
+
+
+Create pod -
+kubectl create -f pod.yaml
+
+Check pod status -
+kubectl get pods -o wide
+
+Wait until status shows:
+Running
+(Now you’ll see the pod IP)
+
+Test Pod Inside Minikube:
+
+Login to Minikube VM -
+minikube ssh
+
+Access Nginx Using Pod IP:
+
+Inside Minikube -
+curl <pod-ip>
+
+Exit - 
+exit
+
+What You Achieved -
+
+✅ Installed kubectl
+✅ Installed Minikube
+✅ Started Kubernetes cluster
+✅ Created Nginx Pod
+✅ Verified pod running
+✅Accessed application
